@@ -43,7 +43,7 @@ export default class Myproject extends Component {
     return (
       <View style={styles.MainContainer}>
         <TextInput
-          placeholder="Enter Name Here"
+          placeholder="Enter Full Name Here"
           onChangeText={(data) => this.setState({textInput_Holder: data})}
           style={styles.textInputStyle}
           underlineColorAndroid="transparent"
