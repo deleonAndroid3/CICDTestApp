@@ -47,7 +47,7 @@ jobs:
   android:
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-29
+      - image: circleci/android:api-30
     environment:
       JVM_OPTS: -Xmx3200m
 
@@ -55,9 +55,10 @@ jobs:
       - checkout
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      # - run:
-      #     name: Chmod permissions
-      #     command: sudo chmod +x ./gradlew
+      #if permission for Gradlew Dependencies fail, use this.     
+      - run:
+          name: Chmod permissions
+          command: sudo chmod +x ./gradlew
       - run:
           name: Download Dependencies
           working_directory: ~/code
@@ -69,15 +70,8 @@ jobs:
       - run:
           name: Run Tests
           command: ./gradlew lint test
-      - store_artifacts:
-          path: app/build/reports
-          destination: reports
-      - store_test_results:
-          path: app/build/test-results
-
       # Generate apk
       - run: ./gradlew assembleDebug
-
       # Upload app to BrowserStack and set app url in an environment variable.
       # Here replace browserstack_android_sample-debug.apk with name of your apk.
       - run:
@@ -96,9 +90,13 @@ jobs:
               echo "App upload failed, reason : ",$UPLOAD_ERROR_MESSAGE
               exit 1;
             fi
-
       # run tests!
       - run: ./gradlew test
+      - store_artifacts:
+          path: app/build/reports
+          destination: reports
+      - store_test_results:
+          path: app/build/test-results
 
 workflows:
   version: 2.1
