@@ -45,7 +45,7 @@ jobs:
           path: test-results
 
   android:
-     working_directory: ~/code
+    working_directory: ~/code
     docker:
       - image: circleci/android:api-29
     environment:
