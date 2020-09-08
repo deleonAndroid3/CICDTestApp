@@ -54,7 +54,6 @@ jobs:
 
     steps: 
       - checkout
-      - run: npm install
       - restore_cache:
           key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run: #if permission for Gradlew Dependencies fail, use this.     
