@@ -109,12 +109,12 @@ jobs:
       - run:
           name: Build Android JS Bundle
           command: |
-            ./android/gradlew bundleReleaseJsAndAssets
+            cd android && ./gradlew bundleReleaseJsAndAssets
 
       - run:
           name: Build Android APK
           command: |
-            ./android/gradlew assembleRelease -x bundleReleaseJsAndAssets 
+            cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets 
 
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -148,7 +148,7 @@ jobs:
           key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies
+          command: cd android && ./gradlew androidDependencies
           working_directory: android
       - save_cache:
           key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
