@@ -45,7 +45,7 @@ jobs:
           path: test-results
 
   android:
-    working_directory: ~/code/android
+    working_directory: ~/code
     docker:
       - image: circleci/android:api-30
     environment:
@@ -54,7 +54,7 @@ jobs:
     steps: 
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "/build.gradle" }}-{{ checksum  "/build.gradle" }}
+          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run: #if permission for Gradlew Dependencies fail, use this.     
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
@@ -63,8 +63,8 @@ jobs:
           command: ./gradlew androidDependencies
       - save_cache:
           paths:
-            - ~/.gradle
-          key: jars-{{ checksum "/build.gradle" }}-{{ checksum  "/build.gradle" }}
+            - ~/android/.gradle
+          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run:
           name: Run Tests
           command: ./gradlew lint test
