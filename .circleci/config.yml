@@ -54,7 +54,7 @@ jobs:
     steps: 
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "android/build.gradle" }}
+          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       #if permission for Gradlew Dependencies fail, use this.     
       - run:
           name: Chmod permissions
@@ -66,7 +66,7 @@ jobs:
       - save_cache:
           paths:
             - ~/android/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "android/build.gradle" }}
+          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run:
           name: Run Tests
           command: ./gradlew lint test
