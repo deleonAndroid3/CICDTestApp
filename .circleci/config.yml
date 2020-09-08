@@ -57,19 +57,19 @@ jobs:
           key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run: #if permission for Gradlew Dependencies fail, use this.     
           name: Chmod permissions
-          command: sudo chmod +x ./gradlew
+          command: sudo chmod +x ./android/gradlew
       - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies
+          command: ./android/gradlew androidDependencies
       - save_cache:
           paths:
             - ~/android/.gradle
           key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run:
           name: Run Tests
-          command: ./gradlew lint test
+          command: ./android/gradlew lint test
       # Generate apk
-      - run: ./gradlew assembleDebug
+      - run: ./android/gradlew assembleDebug
       # Upload app to BrowserStack and set app url in an environment variable.
       # Here replace browserstack_android_sample-debug.apk with name of your apk.
       - run:
