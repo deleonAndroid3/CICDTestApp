@@ -10,9 +10,9 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-native-community/cli-platform-android": "^4.11.0",
+    "@react-native-community/cli-platform-android": "3.0.3",
     "react": "16.13.1",
-    "react-native": "0.63.2",
+    "react-native": "0.61.5",
     "selenium-webdriver": "^4.0.0-alpha.7",
     "wd": "^1.13.0"
   },
