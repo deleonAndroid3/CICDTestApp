@@ -101,7 +101,7 @@ workflows:
   node-android:
     jobs:
       - node
-      - android:
+      - android
           # requires:
           #   - node
       
