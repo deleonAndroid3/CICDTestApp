@@ -79,7 +79,7 @@ jobs:
       - run:
           name: Run lint Tests
           command: cd android && ./gradlew lint test
-s
+
       # Generate apk
       - run: cd android && ./gradlew assembleDebug
       # Upload app to BrowserStack and set app url in an environment variable.
