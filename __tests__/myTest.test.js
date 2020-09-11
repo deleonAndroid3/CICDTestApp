@@ -1,32 +1,32 @@
 /* eslint-disable prettier/prettier */
 import wd from 'wd';
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
-const PORT = 4723;
-const config = {
-  platformName: 'Android',
-  deviceName: 'Android Emulator',
-  app: 'C:/Users/Carlo/Documents/1.Projects/React Native/CICDTestApp/android/app/build/outputs/apk/debug/app-debug.apk',
-};
+// jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+// const PORT = 4723;
+// const config = {
+//   platformName: 'Android',
+//   deviceName: 'Android Emulator',
+//   app: 'C:/Users/Carlo/Documents/1.Projects/React Native/CICDTestApp/android/app/build/outputs/apk/debug/app-debug.apk',
+// };
 
-const driver = wd.promiseChainRemote('localhost', PORT);
+// const driver = wd.promiseChainRemote('localhost', PORT);
 
 
-// userName = process.env.BROWSERSTACK_USERNAME
-// accessKey = process.env.BROWSERSTACK_ACCESS_KEY
-// app = process.env.BROWSERSTACK_APP_ID
+userName = process.env.BROWSERSTACK_USERNAME
+accessKey = process.env.BROWSERSTACK_ACCESS_KEY
+app = process.env.BROWSERSTACK_APP_ID
 
-// var capabilities = {
-//     "browserstack.user" : userName,
-//     "browserstack.key" : accessKey,
-//     "app" : app,
-//     "device" : "Samsung Galaxy S8",
-//     "build" : "MyBuild"
-// }
+var capabilities = {
+    "browserstack.user" : userName,
+    "browserstack.key" : accessKey,
+    "app" : app,
+    "device" : "Samsung Galaxy S8",
+    "build" : "MyBuild"
+}
 
-// driver = wd.promiseRemote("https://hub-cloud.browserstack.com/wd/hub");
+driver = wd.promiseRemote("https://hub-cloud.browserstack.com/wd/hub");
 
 beforeAll(async () => {
-  await driver.init(config);
+  await driver.init(capabilities);
   await driver.sleep(3000);
 }); // Sometime for the app to load
 

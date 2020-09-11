@@ -10,9 +10,8 @@ jobs:
         - node/install-packages:
             cache-path: ~/project/node_modules
             override-ci-command: npm install
-        - run: npm run test
   node:
-    working_directory: ~/demo-react-native
+    working_directory: ~/project
     docker:
       - image: circleci/node:14.8.0
     steps:
@@ -45,7 +44,7 @@ jobs:
       #       JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          root: ~/demo-react-native
+          root: ~/project
           paths:
             - node_modules
     
@@ -56,7 +55,7 @@ jobs:
           path: test-results
 
   android:
-    working_directory: ~/demo-react-native
+    working_directory: ~/project
     docker:
       - image: circleci/android:api-30
     environment:
