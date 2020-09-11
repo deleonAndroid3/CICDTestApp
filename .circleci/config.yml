@@ -112,6 +112,7 @@ workflows:
   version: 2.1
   node-android:
     jobs:
+      - test
       - node
       - android:
           requires:
