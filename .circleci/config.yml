@@ -68,8 +68,9 @@ jobs:
       # - run:
       #     name: Run Tests
       #     command: ./android/gradlew lint test
+
       # Generate apk
-      - run: ./android/gradlew assembleDebug
+      - run: cd android && ./gradlew assembleDebug
       # Upload app to BrowserStack and set app url in an environment variable.
       # Here replace browserstack_android_sample-debug.apk with name of your apk.
       - run:
@@ -89,7 +90,7 @@ jobs:
               exit 1;
             fi
       # run tests!
-      - run: ./gradlew test
+      - run: cd android && ./gradlew test
       - store_artifacts:
           path: app/build/reports
           destination: reports
