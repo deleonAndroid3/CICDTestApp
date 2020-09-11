@@ -44,7 +44,7 @@ jobs:
       - store_artifacts:
           path: test-results
 
-  android-notworking:
+  android:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-30
@@ -99,68 +99,12 @@ jobs:
       - store_test_results:
           path: app/build/test-results
 
-  android:
-    docker:
-      - image: circleci/android:api-30
-    environment:
-      JVM_OPTS: -Xmx3200m
-
-    steps:
-      - run:
-          name: Build Android JS Bundle
-          command: |
-            cd android && ./gradlew bundleReleaseJsAndAssets
-
-      - run:
-          name: Build Android APK
-          command: |
-            cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets 
-
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-      - run: yarn install
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-      - restore_cache:
-          key: bundle-v2-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
-      - run: 
-          command: bundle install --path vendor/bundle
-          working_directory: android
-      - save_cache:
-          key: bundle-v2-{{ checksum "android/Gemfile.lock" }}-{{ arch }}
-          paths:
-            - android/vendor/bundle      
-      - run: 
-          name: Check MD5 on files
-          command: |
-            md5sum android/build.gradle
-            md5sum android/app/build.gradle            
-            cat android/app/build.gradle | sed -n -e '/dependencies/,$p' > android.app.build.gradle.deps
-      - restore_cache:
-          key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
-      - run:
-          name: Download Dependencies
-          command: cd android && ./gradlew androidDependencies
-          working_directory: android
-      - save_cache:
-          key: android-jars-v1-{{ checksum "android/build.gradle" }}-{{ checksum  "android.app.build.gradle.deps" }}
-          paths:
-            - ~/.gradle
-
 workflows:
   version: 2.1
   node-android:
     jobs:
-      # - node
-      - android
-          # requires:
-          #   - node
+      - node
+      - android:
+          requires:
+            - node
       

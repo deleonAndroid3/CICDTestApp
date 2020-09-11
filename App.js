@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableOpacity,
   TextInput,
+  ToastAndroid
 } from 'react-native';
 
 export default class Myproject extends Component {
@@ -26,10 +27,23 @@ export default class Myproject extends Component {
   }
 
   joinData = () => {
-    this.array.push({title: this.state.textInput_Holder});
-
-    this.setState({arrayHolder: [...this.array]});
+    if(this.state.textInput_Holder == ""){
+      // Alert.alert("Empty");
+      ToastAndroid.show("Empty", ToastAndroid.SHORT);
+    }else{
+      if(!this.hasNumber(this.state.textInput_Holder)){
+        this.array.push({title: this.state.textInput_Holder});
+        this.setState({arrayHolder: [...this.array]});
+      }else{
+        // Alert.alert("Can't Add Numbers");
+          ToastAndroid.show("Can't Add Numbers", ToastAndroid.SHORT);
+      }
+    }
   };
+
+  hasNumber(name){
+    return /\d/.test(name);
+  }
 
   FlatListItemSeparator = () => {
     return <View style={styles.separator} />;
@@ -47,12 +61,14 @@ export default class Myproject extends Component {
           onChangeText={(data) => this.setState({textInput_Holder: data})}
           style={styles.textInputStyle}
           underlineColorAndroid="transparent"
+          accessibilityLabel="nameInput"
         />
 
         <TouchableOpacity
           onPress={this.joinData}
           activeOpacity={0.7}
-          style={styles.button}>
+          style={styles.button}
+          accessibilityLabel="saveName">
           <Text style={styles.buttonText}> Add Values To FlatList </Text>
         </TouchableOpacity>
 
