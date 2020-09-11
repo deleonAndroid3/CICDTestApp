@@ -1,10 +1,23 @@
 version: 2.1
+orbs:
+  node: circleci/node@4.0.0
+
 jobs:
+  test:
+      executor: node/default
+      steps:
+        - checkout
+        - node/install-packages:
+            cache-path: ~/project/node_modules
+            override-ci-command: npm install
+        - run: npm run test
   node:
+    working_directory: ~/demo-react-native
     docker:
       - image: circleci/node:14.8.0
     steps:
       - checkout
+
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
@@ -32,7 +45,8 @@ jobs:
       #       JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          path:
+          root: ~/demo-react-native
+          paths:
             - node_modules
     
       - store_test_results:
@@ -42,6 +56,7 @@ jobs:
           path: test-results
 
   android:
+    working_directory: ~/demo-react-native
     docker:
       - image: circleci/android:api-30
     environment:
@@ -62,9 +77,9 @@ jobs:
             - ~/android/.gradle
           key: jars-{{ checksum "android/build.gradle" }}-{{ checksum "android/build.gradle" }}
       - run:
-          name: Run Tests
-          command: ./android/gradlew lint test
-
+          name: Run lint Tests
+          command: cd android && ./gradlew lint test
+s
       # Generate apk
       - run: cd android && ./gradlew assembleDebug
       # Upload app to BrowserStack and set app url in an environment variable.
