@@ -55,9 +55,9 @@ jobs:
       - checkout
       # - restore_cache:
       #     key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
-      # - run: #if permission for Gradlew Dependencies fail, use this.     
-      #     name: Chmod permissions
-      #     command: sudo chmod +x ./android/gradlew
+      - run: #if permission for Gradlew Dependencies fail, use this.     
+          name: Chmod permissions
+          command: sudo chmod +x ./android/gradlew
       # - run:
       #     name: Download Dependencies
       #     command: cd android && ./gradlew androidDependencies
