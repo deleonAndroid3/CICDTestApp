@@ -37,7 +37,7 @@ jobs:
           root: ~/demo-react-native
           paths:
             - node_modules
-
+    
       - store_test_results:
           path: test-results
 
@@ -53,21 +53,21 @@ jobs:
 
     steps: 
       - checkout
-      - restore_cache:
-          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
-      - run: #if permission for Gradlew Dependencies fail, use this.     
-          name: Chmod permissions
-          command: sudo chmod +x ./android/gradlew
-      - run:
-          name: Download Dependencies
-          command: cd android && ./gradlew androidDependencies
-      - save_cache:
-          paths:
-            - ~/android/.gradle
-          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
-      - run:
-          name: Run Tests
-          command: ./android/gradlew lint test
+      # - restore_cache:
+      #     key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
+      # - run: #if permission for Gradlew Dependencies fail, use this.     
+      #     name: Chmod permissions
+      #     command: sudo chmod +x ./android/gradlew
+      # - run:
+      #     name: Download Dependencies
+      #     command: cd android && ./gradlew androidDependencies
+      # - save_cache:
+      #     paths:
+      #       - ~/android/.gradle
+      #     key: jars-{{ checksum "android/build.gradle" }}-{{ checksum "android/build.gradle" }}
+      # - run:
+      #     name: Run Tests
+      #     command: ./android/gradlew lint test
       # Generate apk
       - run: ./android/gradlew assembleDebug
       # Upload app to BrowserStack and set app url in an environment variable.
