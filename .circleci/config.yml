@@ -45,7 +45,7 @@ jobs:
           path: test-results
 
   android:
-    working_directory: ~/code
+    working_directory: ~/demo-react-native
     docker:
       - image: circleci/android:api-30
     environment:
@@ -53,9 +53,6 @@ jobs:
 
     steps: 
       - checkout
-      - run: 
-          name: Install node_modules
-          command: npm install
       - restore_cache:
           key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run: #if permission for Gradlew Dependencies fail, use this.     
