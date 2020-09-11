@@ -1,7 +1,6 @@
 version: 2.1
 jobs:
   node:
-    working_directory: ~/demo-react-native
     docker:
       - image: circleci/node:14.8.0
     steps:
@@ -34,7 +33,6 @@ jobs:
       #       JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          root: ~/demo-react-native
           paths:
             - node_modules
     
@@ -45,7 +43,6 @@ jobs:
           path: test-results
 
   android:
-    working_directory: ~/demo-react-native
     docker:
       - image: circleci/android:api-30
     environment:
@@ -53,21 +50,21 @@ jobs:
 
     steps: 
       - checkout
-      # - restore_cache:
-      #     key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
+      - restore_cache:
+          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum  "android/build.gradle" }}
       - run: #if permission for Gradlew Dependencies fail, use this.     
           name: Chmod permissions
           command: sudo chmod +x ./android/gradlew
-      # - run:
-      #     name: Download Dependencies
-      #     command: cd android && ./gradlew androidDependencies
-      # - save_cache:
-      #     paths:
-      #       - ~/android/.gradle
-      #     key: jars-{{ checksum "android/build.gradle" }}-{{ checksum "android/build.gradle" }}
-      # - run:
-      #     name: Run Tests
-      #     command: ./android/gradlew lint test
+      - run:
+          name: Download Dependencies
+          command: cd android && ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/android/.gradle
+          key: jars-{{ checksum "android/build.gradle" }}-{{ checksum "android/build.gradle" }}
+      - run:
+          name: Run Tests
+          command: ./android/gradlew lint test
 
       # Generate apk
       - run: cd android && ./gradlew assembleDebug
